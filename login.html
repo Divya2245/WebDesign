@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Registration Page</title>
+    <title>Login Page</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
@@ -16,10 +16,6 @@
         <div class="card">
             <form>
                 <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input class="form-control" type="text" id="name" name="name">
-                </div>
-                <div class="form-group">
                     <label for="email">Email:</label>
                     <input class="form-control" type="email" id="email" name="email">
                 </div>
@@ -28,35 +24,28 @@
                     <input class="form-control" type="password" id="password" name="password">
                 </div>
                 <div class="text-center">
-                    <button type="button" id="reg-btn" class="btn btn-primary" onclick="registerUser()">Register</button>
+                    <button type="button" id="login-btn" class="btn btn-primary" onclick="login()">Login</button>
                 </div>
             </form>
         </div>
     </div>
-
     <script>
-        function registerUser() {
-            let name = document.getElementById("name").value;
+        function login() {
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
-
             let user_records = JSON.parse(localStorage.getItem("users")) || [];
 
-            if (user_records.some((v) => v.email === email)) {
-                alert("Your account already exists! Go to login.");
-                window.location.href = "login.html";
-            } else {
-                let user_data = {
-                    "name": name,
-                    "email": email,
-                    "password": password
-                };
+            if (user_records.some((v) => v.email === email && v.password === password)) {
+                alert("Login Successful");
+                let currentUser = user_records.filter((v) => v.email == email && v.password == password)[0];
+                localStorage.setItem("name", currentUser.name);
+                localStorage.setItem("email", currentUser.email);
 
-                user_records.push(user_data);
-                localStorage.setItem("users", JSON.stringify(user_records));
+                window.location.href = "Profile.html";
+            } else {
+                alert("Login failed!!");
             }
         }
     </script>
 </body>
 </html>
-
